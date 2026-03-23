@@ -18,10 +18,10 @@
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
         .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; flex-direction: column; margin-top: 10px; transition: 0.2s; }
         .btn-zap span { font-size: 11px; font-weight: normal; opacity: 0.9; }
-        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; }
-        .success-card { background: #e8f5e9; border: 1px solid var(--success); cursor: pointer; color: #333; }
+        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; }
+        .success-card { background: #e8f5e9; border: 1px solid var(--success); color: #333; }
         .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
-        .cfop-num { font-size: 36px; color: var(--primary); font-weight: bold; display: block; }
+        .cfop-num { font-size: 32px; color: var(--primary); font-weight: bold; display: block; }
         .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .btn-full { grid-column: span 2; background: #128C7E; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -33,13 +33,10 @@
 <div id="login-screen">
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Portal de Apoio ao Cliente Digisat.</p>
-    
     <label>CNPJ da Empresa:</label>
     <input type="number" id="cnpj-input" placeholder="Apenas números">
-    
     <label>Senha de Acesso:</label>
     <input type="password" id="senha-fake" placeholder="******">
-    
     <button class="btn-entrar" onclick="tentarAcesso()">AUTENTICAR</button>
 </div>
 
@@ -47,12 +44,8 @@
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <div class="exclamation-icon">⚠️</div>
     <div class="error-title">ACESSO NÃO AUTORIZADO</div>
-    <p style="font-size: 14px; color: #444; margin-bottom: 25px;">
-        Este CNPJ não possui uma licença ativa para o Portal de Apoio. Favor entrar em contato para verificar o status do seu acesso.
-    </p>
-    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap btn-full">
-        FALAR COM ADAILTON
-    </a>
+    <p style="font-size: 14px; color: #444; margin-bottom: 25px;">Este CNPJ não possui uma licença ativa. Favor entrar em contato para verificar o status do seu acesso.</p>
+    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap btn-full">FALAR COM ADAILTON</a>
     <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar outro acesso.</button>
 </div>
 
@@ -66,15 +59,15 @@
     <select id="destino" onchange="converter()">
         <option value="revenda">REVENDA</option>
         <option value="consumo">CONSUMO</option>
-        <option value="ativo">ATIVO imobilizado</option>
-        <option value="outros">OUTROS</option>
+        <option value="ativo">ATIVO IMOBILIZADO</option>
+        <option value="bonificacao">BONIFICAÇÃO</option>
     </select>
 
     <label>2. CFOP da Nota (Origem):</label>
     <input type="number" id="origem" placeholder="Ex: 5102" onkeyup="converter()">
 
     <div id="resultado" class="card success-card" onclick="explicar()">
-        <small>Use este CFOP na entrada:</small>
+        <small id="result-label">Use este CFOP na entrada:</small>
         <span class="cfop-num" id="cfop-res">----</span>
         <small id="tipo-badge" style="font-weight: bold;"></small>
         <p style="margin-top:10px; font-size:12px;">💡 Toque para ver a definição técnica.</p>
@@ -93,13 +86,33 @@
 
     <div class="footer">
         Este material foi desenvolvido pela Trust Soluções para uso exclusivo de seus clientes.<br>
-        Reprodução, compartilhamento ou distribuição proibida sem autorização prévia.<br>
+        Reprodução ou compartilhamento proibido sem autorização prévia.<br>
         <strong>A definição entre revenda ou consumo depende da destinação dada pelo comprador.</strong>
     </div>
 </div>
 
 <script>
-    const autorizados = ["10258964000198"]; 
+    const autorizados = ["10258964000198", "10258964000285"]; 
+    
+    // BANCO DE DADOS DE DEFINIÇÕES TÉCNICAS
+    const definicoes = {
+        "1102": "Compra para comercialização de mercadoria tributada dentro do Estado.",
+        "1403": "Compra para comercialização de mercadoria sujeita ao regime de substituição tributária (ST) dentro do Estado.",
+        "1556": "Compra de material para uso ou consumo do estabelecimento dentro do Estado.",
+        "1551": "Compra de bem para o ativo imobilizado do estabelecimento dentro do Estado.",
+        "1407": "Compra de mercadoria para uso ou consumo cuja operação esteja sujeita ao regime de ST dentro do Estado.",
+        "1406": "Compra de bem para o ativo imobilizado cuja operação esteja sujeita ao regime de ST dentro do Estado.",
+        "1910": "Entrada de mercadoria recebida a título de bonificação, brinde ou doação.",
+        "2102": "Compra para comercialização de mercadoria tributada vinda de outro Estado.",
+        "2403": "Compra para comercialização de mercadoria sujeita ao regime de ST vinda de outro Estado.",
+        "2556": "Compra de material para uso ou consumo vinda de outro Estado.",
+        "2551": "Compra de bem para o ativo imobilizado vinda de outro Estado.",
+        "2407": "Compra de mercadoria para uso ou consumo sujeita a ST vinda de outro Estado.",
+        "2406": "Compra de bem para o ativo imobilizado sujeita a ST vinda de outro Estado.",
+        "2910": "Entrada de mercadoria recebida a título de bonificação vinda de outro Estado.",
+        "Ref. NFC-e": "Operação referente a venda acobertada por Cupom Fiscal Eletrônico ou NFC-e. Não gera crédito de ICMS na entrada."
+    };
+
     window.onload = function() {
         if (localStorage.getItem("trust_sessao") === "valida") { liberar(); }
     };
@@ -119,32 +132,48 @@
         document.getElementById('error-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
     }
+
     const db = {
-        "5101": { revenda: "1102", consumo: "1556", ativo: "1551", outros: "1910", tipo: "Tributado" },
-        "5102": { revenda: "1102", consumo: "1556", ativo: "1551", outros: "2910", tipo: "Tributado" },
-        "5403": { revenda: "1403", consumo: "1407", ativo: "1406",裝outros: "1949", tipo: "ST" },
-        "5401": { revenda: "1403", consumo: "1407", ativo: "1406", outros: "2949", tipo: "ST" },
-        "5405": { revenda: "1403", consumo: "1407", ativo: "1406", outros: "Consultar", tipo: "ST" },
-        "6101": { revenda: "2102", consumo: "2556", ativo: "2551", outros: "Consultar", tipo: "Tributado" },
-        "6102": { revenda: "2102", consumo: "2556", ativo: "2551", outros: "Consultar", tipo: "Tributado" },
-        "6403": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
-        "6401": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
-        "6404": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
-        "5929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", outros: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
+        "5101": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
+        "5102": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
+        "5401": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
+        "5403": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
+        "5405": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
+        "5910": { revenda: "1910", consumo: "1910", ativo: "1910", bonificacao: "1910", tipo: "Bonificação" },
+        "6101": { revenda: "2102", consumo: "2556", ativo: "2551", bonificacao: "2910", tipo: "Tributado" },
+        "6102": { revenda: "2102", consumo: "2556", ativo: "2551", bonificacao: "2910", tipo: "Tributado" },
+        "6401": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
+        "6403": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
+        "6404": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
+        "6910": { revenda: "2910", consumo: "2910", ativo: "2910", bonificacao: "2910", tipo: "Bonificação" },
+        "5929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" },
+        "6929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
     };
+
     function converter() {
         const input = document.getElementById('origem').value;
         const destino = document.getElementById('destino').value;
         const resDiv = document.getElementById('resultado');
         const errDiv = document.getElementById('not-found');
+        const label = document.getElementById('result-label');
+
         if (!input || input.length < 4) {
             resDiv.style.display = "none";
             errDiv.style.display = "none";
             return;
         }
+
         if (db[input]) {
-            document.getElementById('cfop-res').innerText = db[input][destino];
+            const resultado = db[input][destino];
+            document.getElementById('cfop-res').innerText = resultado;
             document.getElementById('tipo-badge').innerText = db[input].tipo;
+            
+            if(resultado === "Ref. NFC-e") {
+                label.innerText = "Informação importante:";
+            } else {
+                label.innerText = "Use este CFOP na entrada:";
+            }
+
             resDiv.style.display = "block";
             errDiv.style.display = "none";
         } else {
@@ -152,8 +181,11 @@
             errDiv.style.display = "block";
         }
     }
+
     function explicar() {
-        alert("📚 DEFINIÇÃO TÉCNICA:\n\nUtilize este código na sua entrada de nota no Digisat conforme a destinação informada. Confirmar tributação com sua contabilidade.");
+        const cfop = document.getElementById('cfop-res').innerText;
+        const def = definicoes[cfop] || "Consulte sua contabilidade para detalhes técnicos sobre esta operação.";
+        alert("📚 DEFINIÇÃO TÉCNICA (CFOP " + cfop + "):\n\n" + def);
     }
 </script>
 </body>
