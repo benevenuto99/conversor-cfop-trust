@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Soluções - Portal do Cliente</title>
+    <style>
+        :root { --primary: #004a99; --secondary: #f8f9fa; --danger: #d32f2f; --success: #2e7d32; --zap: #25d366; --alert: #fbc02d; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--secondary); margin: 0; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center;}
+        
+        .logo-img { max-height: 90px; width: auto; display: block; margin: 0 auto 15px auto; border-radius: 8px; }
+
+        #login-screen, #error-screen { display: block; text-align: center; background: white; width: 100%; max-width: 400px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-top: 20px; }
+        #main-app, #error-screen { display: none; }
+
+        .container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); margin-top: 20px;}
+        
+        .exclamation-icon { font-size: 80px; color: var(--alert); margin-bottom: 15px; display: block; }
+        .error-title { color: var(--danger); font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 13px; text-align: left; color: #444; }
+        input, select { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; margin-bottom: 10px; }
+        
+        .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; flex-direction: column; margin-top: 10px; transition: 0.2s; }
+        .btn-zap span { font-size: 11px; font-weight: normal; opacity: 0.9; }
+
+        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; }
+        .success-card { background: #e8f5e9; border: 1px solid var(--success); cursor: pointer; color: #333; }
+        .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
+        
+        .cfop-num { font-size: 36px; color: var(--primary); font-weight: bold; display: block; }
+        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn-full { grid-column: span 2; background: #128C7E; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
+    <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Portal de Apoio ao Cliente Digisat.</p>
+    
+    <label>CNPJ da Empresa:</label>
+    <input type="number" id="cnpj-input" placeholder="Apenas números">
+    <label>Senha de Acesso (Efeito Visual):</label>
+    <input type="password" id="senha-fake" placeholder="******">
+    
+    <button class="btn-entrar" onclick="tentarAcesso()">AUTENTICAR</button>
+</div>
+
+<div id="error-screen">
+    <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
+    <div class="exclamation-icon">⚠️</div>
+    <div class="error-title">ACESSO NÃO AUTORIZADO</div>
+    <p style="font-size: 14px; color: #444; margin-bottom: 25px;">
+        Este CNPJ não possui uma licença ativa para o Portal de Apoio. Favor entrar em contato para verificar o status do seu acesso.
+    </p>
+    
+    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap btn-full">
+        FALAR COM ADAILTON
+    </a>
+    
+    <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar outro acesso.</button>
+</div>
+
+<div class="container" id="main-app">
+    <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <strong style="color: var(--primary); display: block;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
+    </div>
+
+    <label>1. Destinação da Mercadoria:</label>
+    <select id="destino" onchange="converter()">
+        <option value="revenda">REVENDA</option>
+        <option value="consumo">CONSUMO</option>
+        <option value="ativo">ATIVO imobilizado</option>
+        <option value="outros">OUTROS</option>
+    </select>
+
+    <label>2. CFOP da Nota (Origem):</label>
+    <input type="number" id="origem" placeholder="Ex: 5102" onkeyup="converter()">
+
+    <div id="resultado" class="card success-card" onclick="explicar()">
+        <small>Use este CFOP na entrada:</small>
+        <span class="cfop-num" id="cfop-res">----</span>
+        <small id="tipo-badge" style="font-weight: bold;"></small>
+        <p style="margin-top:10px; font-size:12px;">💡 Toque para ver a definição técnica.</p>
+    </div>
+
+    <div id="not-found" class="card warning-card">
+        <strong>⚠️ CFOP NÃO ENCONTRADO</strong>
+        <p style="font-size: 13px; margin-top: 5px;">Favor consultar o código fiscal correspondente com sua contabilidade.</p>
+    </div>
+
+    <div class="tech-support">
+        <a href="https://wa.me/5532988524952?text=Olá Wesley, estou precisando de suporte técnico." class="btn-zap">WESLEY<span>Suporte Técnico</span></a>
+        <a href="https://wa.me/5532984351435?text=Olá Felipe, estou precisando de suporte técnico." class="btn-zap">FELIPE<span>Suporte Técnico</span></a>
+        <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">ADAILTON<span>Financeiro e Treinamentos</span></a>
+    </div>
+
+    <div class="footer">
+        Este material foi desenvolvido pela Trust Soluções para uso exclusivo de seus clientes.<br>
+        Reprodução, compartilhamento ou distribuição proibida sem autorização prévia.<br>
+        <strong>A definição entre revenda ou consumo depende da destinação dada pelo comprador.</strong>
+    </div>
+</div>
+
+<script>
+    const autorizados = ["10258964000198"]; 
+
+    window.onload = function() {
+        if (localStorage.getItem("trust_sessao") === "valida") { liberar(); }
+    };
+
+    function tentarAcesso() {
+        const cnpj = document.getElementById('cnpj-input').value;
+        const senha = document.getElementById('senha-fake').value;
+
+        if (autorizados.includes(cnpj) && senha.length > 0) {
+            localStorage.setItem("trust_sessao", "valida");
+            liberar();
+        } else {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'block';
+        }
+    }
+
+    function liberar() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('error-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+    }
+
+    const db = {
+        "5101": { revenda: "1102", consumo: "1556", ativo: "1551", outros: "1910", tipo: "Tributado" },
+        "5102": { revenda: "1102", consumo: "1556", ativo: "1551", outros: "2910", tipo: "Tributado" },
+        "5403": { revenda: "1403", consumo: "1407", ativo: "1406", outros: "1949", tipo: "ST" },
+        "5401": { revenda: "1403", consumo: "1407", ativo: "1406", outros: "2949", tipo: "ST" },
+        "5405": { revenda: "1403", consumo: "1407", ativo: "1406", outros: "Consultar", tipo: "ST" },
+        "6101": { revenda: "2102", consumo: "2556", ativo: "2551", outros: "Consultar", tipo: "Tributado" },
+        "6102": { revenda: "2102", consumo: "2556", ativo: "2551", outros: "Consultar", tipo: "Tributado" },
+        "6403": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
+        "6401": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
+        "6404": { revenda: "2403", consumo: "2407", ativo: "2406", outros: "Consultar", tipo: "ST" },
+        "5929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", outros: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
+    };
+
+    function converter() {
+        const input = document.getElementById('origem').value;
+        const destino = document.getElementById('destino').value;
+        const resDiv = document.getElementById('resultado');
+        const errDiv = document.getElementById('not-found');
+
+        if (!input || input.length < 4) {
+            resDiv.style.display = "none";
+            errDiv.style.display = "none";
+            return;
+        }
+
+        if (db[input]) {
+            document.getElementById('cfop-res').innerText = db[input][destino];
+            document.getElementById('tipo-badge').innerText = db[input].tipo;
+            resDiv.style.display = "block";
+            errDiv.style.display = "none";
+        } else {
+            resDiv.style.display = "none";
+            errDiv.style.display = "block";
+        }
+    }
+
+    function explicar() {
+        alert("📚 DEFINIÇÃO TÉCNICA:\n\nUtilize este código na sua entrada de nota no Digisat conforme a destinação informada. Confirmar tributação com sua contabilidade.");
+    }
+</script>
+</body>
+</html>
