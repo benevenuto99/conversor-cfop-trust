@@ -22,14 +22,15 @@
         
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
         
-        /* Layout Original de Botões (Wesley/Felipe em Grade, Adailton Full) */
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; }
+        /* GRADE DE SUPORTE CORRIGIDA */
+        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; box-sizing: border-box; }
         
-        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); box-sizing: border-box; }
         .btn-zap div { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-zap span { font-size: 11px; font-weight: normal; opacity: 0.9; margin-top: 2px; text-align: center; }
-        .zap-icon { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: 2px; text-align: center; }
+        .zap-icon { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
         
+        /* Botão Adailton com largura controlada pela grade */
         .btn-full { grid-column: span 2; background: #128C7E; width: 100%; }
 
         .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; text-align: center; }
