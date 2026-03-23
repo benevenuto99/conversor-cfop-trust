@@ -24,13 +24,14 @@
         
         .logo-img { max-height: 90px; width: auto; display: block; margin: 0 auto 15px auto; border-radius: 8px; }
         
-        /* ANIMAÇÕES */
         .fade-in { animation: fadeIn 0.8s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .header-block { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; }
+
         #welcome-msg { 
-            font-size: 15px; color: var(--primary); margin-bottom: 15px; font-weight: bold; 
-            display: none; background: #e3f2fd; padding: 10px 20px; border-radius: 30px;
+            font-size: 15px; color: var(--primary); font-weight: bold; 
+            display: none; background: #e3f2fd; padding: 8px 18px; border-radius: 30px;
             border: 1px solid #bbdefb; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
@@ -41,7 +42,6 @@
         }
         #main-app, #error-screen, #loader { display: none; }
 
-        /* CADEADO */
         .lock-icon { font-size: 60px; transition: 0.5s; display: inline-block; margin-bottom: 10px; }
         .unlock-animation { transform: rotate(-15deg) scale(1.2); color: var(--success); }
 
@@ -50,13 +50,12 @@
         
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
 
-        /* SUPORTE ZAP */
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; }
-        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; box-sizing: border-box;}
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-zap div { display: flex; flex-direction: column; align-items: center; }
-        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: 2px; }
+        .btn-zap span { font-size: 9px; font-weight: normal; opacity: 0.9; margin-top: 2px; line-height: 1.1; }
         .zap-icon { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
-        .btn-full { grid-column: span 2; background: #128C7E; }
+        .btn-full { grid-column: span 2; background: #128C7E; width: 100% !important; }
 
         .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; border: 1px solid var(--success); background: #e8f5e9; }
         .cfop-num { font-size: 34px; color: var(--primary); font-weight: bold; display: block; margin: 5px 0; }
@@ -91,15 +90,18 @@
     <div class="exclamation-icon">⚠️</div>
     <div class="error-title">ACESSO NÃO AUTORIZADO</div>
     <p style="font-size: 14px; color: #444; margin-bottom: 25px;">Este CNPJ não possui uma licença ativa.</p>
-    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar o portal." class="btn-zap btn-full">
+    <a href="https://wa.me/5532988342294?text=Olá Adailton, não consegui acessar o portal de CFOP e gostaria de verificar minha licença." class="btn-zap btn-full">
         <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>FALAR COM ADAILTON</a>
     <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar novamente.</button>
 </div>
 
 <div id="main-app" class="fade-in">
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
-    <div id="welcome-msg" class="fade-in"></div>
-    <strong style="color: var(--primary); display: block; margin-bottom: 15px;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
+    
+    <div class="header-block">
+        <div id="welcome-msg" class="fade-in"></div>
+        <strong style="color: var(--primary); display: block;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
+    </div>
 
     <label>1. Destinação da Mercadoria:</label>
     <select id="destino" onchange="converter()">
@@ -120,9 +122,20 @@
     </div>
 
     <div class="tech-support">
-        <a href="https://wa.me/5532988524952" class="btn-zap"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>WESLEY<span>Suporte</span></div></a>
-        <a href="https://wa.me/5532984351435" class="btn-zap"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>FELIPE<span>Suporte</span></div></a>
-        <a href="https://wa.me/5532988342294" class="btn-zap btn-full"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>ADAILTON<span>Treinamentos</span></div></a>
+        <a href="https://wa.me/5532984351435?text=Olá Felipe, estou precisando de suporte técnico." class="btn-zap">
+            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
+            <div>FELIPE<span>Suporte Técnico</span></div>
+        </a>
+        
+        <a href="https://wa.me/5532988524952?text=Olá Wesley, estou precisando de suporte técnico." class="btn-zap">
+            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
+            <div>WESLEY<span>Suporte Técnico</span></div>
+        </a>
+        
+        <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">
+            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
+            <div>ADAILTON<span>Financeiro, Treinamentos e Outros</span></div>
+        </a>
     </div>
 
     <div class="footer">Desenvolvido por Trust Soluções para uso exclusivo.</div>
