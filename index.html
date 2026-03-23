@@ -22,19 +22,18 @@
         
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
         
-        /* Botão do WhatsApp Estilizado */
-        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; transition: 0.2s; }
-        .btn-zap div { display: flex; flex-direction: column; align-items: center; }
-        .btn-zap span { font-size: 11px; font-weight: normal; opacity: 0.9; }
-        .zap-icon { width: 20px; height: 20px; fill: white; }
+        /* Botões de Suporte Harmonizados */
+        .tech-support { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; width: 100%; }
+        
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; width: 85%; transition: 0.2s; box-sizing: border-box;}
+        .btn-zap div { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: -2px;}
+        .zap-icon { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
 
         .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; }
         .success-card { background: #e8f5e9; border: 1px solid var(--success); color: #333; }
         .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
         .cfop-num { font-size: 32px; color: var(--primary); font-weight: bold; display: block; }
-        
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .btn-full { grid-column: span 2; background: #128C7E; }
         
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; line-height: 1.4; }
@@ -64,10 +63,12 @@
     <div class="error-title">ACESSO NÃO AUTORIZADO</div>
     <p style="font-size: 14px; color: #444; margin-bottom: 25px;">Este CNPJ não possui uma licença ativa. Favor entrar em contato para verificar o status do seu acesso.</p>
     
-    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap btn-full">
-        <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
-        FALAR COM ADAILTON
-    </a>
+    <div class="tech-support">
+        <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap" style="background: #128C7E; width: 100%;">
+            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
+            FALAR COM ADAILTON
+        </a>
+    </div>
     
     <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar outro acesso.</button>
 </div>
@@ -110,7 +111,7 @@
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>FELIPE<span>Suporte Técnico</span></div>
         </a>
-        <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">
+        <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap" style="background: #128C7E;">
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>ADAILTON<span>Financeiro e Treinamentos</span></div>
         </a>
