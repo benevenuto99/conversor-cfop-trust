@@ -57,6 +57,9 @@
         .zap-icon { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
         .btn-full { grid-column: span 2; background: #128C7E; width: 100% !important; }
 
+        /* BOTÃO SAIR MASTER */
+        #btn-sair-master { display: none; margin-top: 15px; color: #999; text-decoration: underline; font-size: 11px; cursor: pointer; background: none; border: none; }
+
         .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; border: 1px solid var(--success); background: #e8f5e9; }
         .cfop-num { font-size: 34px; color: var(--primary); font-weight: bold; display: block; margin: 5px 0; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -126,17 +129,17 @@
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>FELIPE<span>Suporte Técnico</span></div>
         </a>
-        
         <a href="https://wa.me/5532988524952?text=Olá Wesley, estou precisando de suporte técnico." class="btn-zap">
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>WESLEY<span>Suporte Técnico</span></div>
         </a>
-        
         <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>ADAILTON<span>Financeiro, Treinamentos e Outros</span></div>
         </a>
     </div>
+
+    <button id="btn-sair-master" onclick="logoutMaster()">Encerrar Sessão Master</button>
 
     <div class="footer">Desenvolvido por Trust Soluções para uso exclusivo.</div>
 </div>
@@ -185,7 +188,8 @@
 
     window.onload = function() {
         const empresaLogada = localStorage.getItem("trust_empresa");
-        if (empresaLogada) { liberar(empresaLogada); }
+        const cnpjLogado = localStorage.getItem("trust_cnpj");
+        if (empresaLogada) { liberar(empresaLogada, cnpjLogado); }
     };
 
     function processarLogin() {
@@ -203,7 +207,8 @@
             }, 800);
             setTimeout(() => {
                 localStorage.setItem("trust_empresa", nome);
-                liberar(nome);
+                localStorage.setItem("trust_cnpj", cnpj);
+                liberar(nome, cnpj);
                 logarNoGoogle(nome, "Login Inicial");
             }, 1800);
         } else {
@@ -212,13 +217,24 @@
         }
     }
 
-    function liberar(nome) {
+    function liberar(nome, cnpj) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('loader').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
+        
         const welcome = document.getElementById('welcome-msg');
         welcome.innerText = "Olá, " + nome + "!";
         welcome.style.display = "inline-block";
+
+        // MOSTRA O BOTÃO SAIR SOMENTE PARA O CNPJ MASTER
+        if (cnpj === "10258964000198") {
+            document.getElementById('btn-sair-master').style.display = "inline-block";
+        }
+    }
+
+    function logoutMaster() {
+        localStorage.clear();
+        location.reload();
     }
 
     function converter() {
