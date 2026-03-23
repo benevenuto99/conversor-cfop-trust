@@ -110,6 +110,7 @@
         <option value="revenda">REVENDA</option>
         <option value="consumo">CONSUMO</option>
         <option value="ativo">ATIVO IMOBILIZADO</option>
+        <option value="industrializacao">INDUSTRIALIZAÇÃO</option>
         <option value="bonificacao">BONIFICAÇÃO</option>
     </select>
 
@@ -132,7 +133,6 @@
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>WESLEY<span>Suporte Técnico</span></div>
         </a>
-        
         <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">
             <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
             <div>ADAILTON<span>Agendar Treinamentos, Financeiro e Outros</span></div>
@@ -152,6 +152,7 @@
     }; 
 
     const definicoes = {
+        "1101": "Compra para industrialização de mercadoria tributada dentro do Estado.",
         "1102": "Compra para comercialização de mercadoria tributada dentro do Estado.",
         "1403": "Compra para comercialização de mercadoria sujeita ao regime de ST dentro do Estado.",
         "1556": "Compra de material para uso ou consumo dentro do Estado.",
@@ -159,6 +160,7 @@
         "1407": "Compra para uso ou consumo sujeita ao regime de ST dentro do Estado.",
         "1406": "Compra para o ativo imobilizado sujeita ao regime de ST dentro do Estado.",
         "1910": "Entrada de mercadoria recebida a título de bonificação, brinde ou doação.",
+        "2101": "Compra para industrialização de mercadoria tributada vinda de outro Estado.",
         "2102": "Compra para comercialização de mercadoria tributada vinda de outro Estado.",
         "2403": "Compra para comercialização de mercadoria sujeita ao regime de ST vinda de outro Estado.",
         "2556": "Compra para uso ou consumo vinda de outro Estado.",
@@ -170,20 +172,20 @@
     };
 
     const db = {
-        "5101": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
-        "5102": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
-        "5401": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
-        "5403": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
-        "5405": { revenda: "1403", consumo: "1407", ativo: "1406", bonificacao: "1910", tipo: "ST" },
-        "5910": { revenda: "1910", consumo: "1910", ativo: "1910", bonificacao: "1910", tipo: "Bonificação" },
-        "6101": { revenda: "2102", consumo: "2556", ativo: "2551", bonificacao: "2910", tipo: "Tributado" },
-        "6102": { revenda: "2102", consumo: "2556", ativo: "2551", bonificacao: "2910", tipo: "Tributado" },
-        "6401": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
-        "6403": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
-        "6404": { revenda: "2403", consumo: "2407", ativo: "2406", bonificacao: "2910", tipo: "ST" },
-        "6910": { revenda: "2910", consumo: "2910", ativo: "2910", bonificacao: "2910", tipo: "Bonificação" },
-        "5929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" },
-        "6929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
+        "5101": { revenda: "1102", consumo: "1556", ativo: "1551", industrializacao: "1101", bonificacao: "1910", tipo: "Tributado" },
+        "5102": { revenda: "1102", consumo: "1556", ativo: "1551", industrializacao: "1101", bonificacao: "1910", tipo: "Tributado" },
+        "5401": { revenda: "1403", consumo: "1407", ativo: "1406", industrializacao: "1101", bonificacao: "1910", tipo: "ST" },
+        "5403": { revenda: "1403", consumo: "1407", ativo: "1406", industrializacao: "1101", bonificacao: "1910", tipo: "ST" },
+        "5405": { revenda: "1403", consumo: "1407", ativo: "1406", industrializacao: "1101", bonificacao: "1910", tipo: "ST" },
+        "5910": { revenda: "1910", consumo: "1910", ativo: "1910", industrializacao: "1910", bonificacao: "1910", tipo: "Bonificação" },
+        "6101": { revenda: "2102", consumo: "2556", ativo: "2551", industrializacao: "2101", bonificacao: "2910", tipo: "Tributado" },
+        "6102": { revenda: "2102", consumo: "2556", ativo: "2551", industrializacao: "2101", bonificacao: "2910", tipo: "Tributado" },
+        "6401": { revenda: "2403", consumo: "2407", ativo: "2406", industrializacao: "2101", bonificacao: "2910", tipo: "ST" },
+        "6403": { revenda: "2403", consumo: "2407", ativo: "2406", industrializacao: "2101", bonificacao: "2910", tipo: "ST" },
+        "6404": { revenda: "2403", consumo: "2407", ativo: "2406", industrializacao: "2101", bonificacao: "2910", tipo: "ST" },
+        "6910": { revenda: "2910", consumo: "2910", ativo: "2910", industrializacao: "2910", bonificacao: "2910", tipo: "Bonificação" },
+        "5929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", industrializacao: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" },
+        "6929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", industrializacao: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
     };
 
     window.onload = function() {
