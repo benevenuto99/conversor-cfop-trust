@@ -10,10 +10,7 @@
 
       function logarNoGoogle(nomeEmpresa, acao) {
           if (typeof gtag === 'function') {
-              gtag('event', 'uso_portal', {
-                  'empresa': nomeEmpresa,
-                  'tipo_acesso': acao
-              });
+              gtag('event', 'uso_portal', { 'empresa': nomeEmpresa, 'tipo_acesso': acao });
           }
       }
     </script>
@@ -23,39 +20,48 @@
     <title>Trust Soluções - Portal do Cliente</title>
     <style>
         :root { --primary: #004a99; --secondary: #f8f9fa; --danger: #d32f2f; --success: #2e7d32; --zap: #25d366; --alert: #fbc02d; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--secondary); margin: 0; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center;}
+        body { font-family: 'Segoe UI', sans-serif; background: var(--secondary); margin: 0; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center; overflow-x: hidden;}
+        
         .logo-img { max-height: 90px; width: auto; display: block; margin: 0 auto 15px auto; border-radius: 8px; }
         
-        #login-screen, #error-screen { display: block; text-align: center; background: white; width: 100%; max-width: 400px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-top: 20px; }
-        #main-app, #error-screen { display: none; }
-        
-        .container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); margin-top: 20px; box-sizing: border-box;}
-        
-        .exclamation-icon { font-size: 80px; color: var(--alert); margin-bottom: 15px; display: block; }
-        .error-title { color: var(--danger); font-size: 20px; font-weight: bold; margin-bottom: 15px; }
-        
+        /* ANIMAÇÕES */
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #welcome-msg { 
+            font-size: 15px; color: var(--primary); margin-bottom: 15px; font-weight: bold; 
+            display: none; background: #e3f2fd; padding: 10px 20px; border-radius: 30px;
+            border: 1px solid #bbdefb; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        #login-screen, #error-screen, .container, #loader { 
+            background: white; width: 100%; max-width: 400px; padding: 30px 20px; 
+            border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-top: 20px; 
+            box-sizing: border-box; text-align: center;
+        }
+        #main-app, #error-screen, #loader { display: none; }
+
+        /* CADEADO */
+        .lock-icon { font-size: 60px; transition: 0.5s; display: inline-block; margin-bottom: 10px; }
+        .unlock-animation { transform: rotate(-15deg) scale(1.2); color: var(--success); }
+
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 13px; text-align: left; color: #444; }
         input, select { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; margin-bottom: 10px; }
         
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        
-        /* GRADE DE SUPORTE - AJUSTE FINAL DE SINCRONISMO */
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; box-sizing: border-box; }
-        
-        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); box-sizing: border-box; width: 100%; }
-        .btn-zap div { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: 2px; text-align: center; }
+
+        /* SUPORTE ZAP */
+        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; }
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-zap div { display: flex; flex-direction: column; align-items: center; }
+        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: 2px; }
         .zap-icon { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
-        
         .btn-full { grid-column: span 2; background: #128C7E; }
 
-        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; text-align: center; }
-        .success-card { background: #e8f5e9; border: 1px solid var(--success); color: #333; }
-        .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
+        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; border: 1px solid var(--success); background: #e8f5e9; }
         .cfop-num { font-size: 34px; color: var(--primary); font-weight: bold; display: block; margin: 5px 0; }
-        
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; line-height: 1.4; }
+        .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -66,36 +72,34 @@
     </symbol>
 </svg>
 
-<div id="login-screen">
+<div id="login-screen" class="fade-in">
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Portal de Apoio ao Cliente Digisat.</p>
     <label>CNPJ da Empresa:</label>
     <input type="number" id="cnpj-input" placeholder="Apenas números">
     <label>Senha de Acesso:</label>
     <input type="password" id="senha-fake" placeholder="******">
-    <button class="btn-entrar" onclick="tentarAcesso()">AUTENTICAR</button>
+    <button class="btn-entrar" onclick="processarLogin()">AUTENTICAR</button>
+</div>
+
+<div id="loader">
+    <div id="lock" class="lock-icon">🔒</div>
+    <p id="loader-text" style="font-weight:bold; color:var(--primary);">Verificando licença...</p>
 </div>
 
 <div id="error-screen">
-    <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <div class="exclamation-icon">⚠️</div>
     <div class="error-title">ACESSO NÃO AUTORIZADO</div>
-    <p style="font-size: 14px; color: #444; margin-bottom: 25px;">Este CNPJ não possui uma licença ativa. Favor entrar em contato para verificar o status do seu acesso.</p>
-    <div class="tech-support">
-        <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar a minha tabela de CFOP. Poderia me ajudar?" class="btn-zap btn-full">
-            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
-            FALAR COM ADAILTON
-        </a>
-    </div>
-    <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar outro acesso.</button>
+    <p style="font-size: 14px; color: #444; margin-bottom: 25px;">Este CNPJ não possui uma licença ativa.</p>
+    <a href="https://wa.me/5532988342294?text=Olá Adailton, estou tendo problemas para acessar o portal." class="btn-zap btn-full">
+        <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>FALAR COM ADAILTON</a>
+    <button onclick="location.reload()" style="background:none; border:none; color:var(--primary); margin-top:20px; cursor:pointer; font-size:12px; text-decoration:underline;">Tentar novamente.</button>
 </div>
 
-<div class="container" id="main-app">
+<div id="main-app" class="fade-in">
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <p id="welcome-msg" style="font-size: 14px; color: #666; margin-bottom: 5px; font-weight: bold;"></p>
-        <strong style="color: var(--primary); display: block;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
-    </div>
+    <div id="welcome-msg" class="fade-in"></div>
+    <strong style="color: var(--primary); display: block; margin-bottom: 15px;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
 
     <label>1. Destinação da Mercadoria:</label>
     <select id="destino" onchange="converter()">
@@ -108,46 +112,29 @@
     <label>2. CFOP da Nota (Origem):</label>
     <input type="number" id="origem" placeholder="Ex: 5102" onkeyup="converter()">
 
-    <div id="resultado" class="card success-card" onclick="explicar()">
+    <div id="resultado" class="card" onclick="explicar()">
         <small id="result-label">Use este CFOP na entrada:</small>
         <span class="cfop-num" id="cfop-res">----</span>
         <small id="tipo-badge" style="font-weight: bold;"></small>
         <p style="margin-top:10px; font-size:12px;">💡 Toque para ver a definição técnica.</p>
     </div>
 
-    <div id="not-found" class="card warning-card" style="text-align: center;">
-        <strong>⚠️ CFOP NÃO ENCONTRADO</strong>
-        <p style="font-size: 13px; margin-top: 5px;">Favor consultar sua contabilidade.</p>
-    </div>
-
     <div class="tech-support">
-        <a href="https://wa.me/5532988524952?text=Olá Wesley, estou precisando de suporte técnico." class="btn-zap">
-            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
-            <div>WESLEY<span>Suporte Técnico</span></div>
-        </a>
-        <a href="https://wa.me/5532984351435?text=Olá Felipe, estou precisando de suporte técnico." class="btn-zap">
-            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
-            <div>FELIPE<span>Suporte Técnico</span></div>
-        </a>
-        <a href="https://wa.me/5532988342294?text=Olá Adailton, gostaria de falar sobre financeiro ou agendamentos." class="btn-zap btn-full">
-            <svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg>
-            <div>ADAILTON<span>Financeiro e Treinamentos</span></div>
-        </a>
+        <a href="https://wa.me/5532988524952" class="btn-zap"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>WESLEY<span>Suporte</span></div></a>
+        <a href="https://wa.me/5532984351435" class="btn-zap"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>FELIPE<span>Suporte</span></div></a>
+        <a href="https://wa.me/5532988342294" class="btn-zap btn-full"><svg class="zap-icon"><use xlink:href="#icon-whatsapp"></use></svg><div>ADAILTON<span>Treinamentos</span></div></a>
     </div>
 
-    <div class="footer">
-        Este material foi desenvolvido pela Trust Soluções para uso exclusivo de seus clientes.<br>
-        Reprodução ou compartilhamento proibido sem autorização prévia.
-    </div>
+    <div class="footer">Desenvolvido por Trust Soluções para uso exclusivo.</div>
 </div>
 
 <script>
-    // LISTA DE AUTORIZADOS
     const autorizados = {
         "10258964000198": "Usuário Master Trust Soluções em Informática",
+        "44694375000174": "Ione Doidinha",
         "12345678000100": "Felipe Ferreira"
     }; 
-    
+
     const definicoes = {
         "1102": "Compra para comercialização de mercadoria tributada dentro do Estado.",
         "1403": "Compra para comercialização de mercadoria sujeita ao regime de ST dentro do Estado.",
@@ -166,38 +153,6 @@
         "Ref. NFC-e": "Operação referente a venda acobertada por Cupom Fiscal Eletrônico ou NFC-e."
     };
 
-    window.onload = function() {
-        const empresaLogada = localStorage.getItem("trust_empresa");
-        if (empresaLogada) { 
-            liberar(empresaLogada); 
-            logarNoGoogle(empresaLogada, "Reabertura");
-        }
-    };
-
-    function tentarAcesso() {
-        const cnpjInput = document.getElementById('cnpj-input').value;
-        const senha = document.getElementById('senha-fake').value;
-        
-        // CORREÇÃO: Busca direta no objeto usando o CNPJ digitado
-        if (autorizados[cnpjInput] && senha.length > 0) {
-            const nomeEmpresa = autorizados[cnpjInput];
-            localStorage.setItem("trust_sessao", "valida");
-            localStorage.setItem("trust_empresa", nomeEmpresa);
-            liberar(nomeEmpresa);
-            logarNoGoogle(nomeEmpresa, "Login Inicial");
-        } else {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('error-screen').style.display = 'block';
-        }
-    }
-
-    function liberar(nome) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('error-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        document.getElementById('welcome-msg').innerText = "Olá, " + nome + "!";
-    }
-
     const db = {
         "5101": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
         "5102": { revenda: "1102", consumo: "1556", ativo: "1551", bonificacao: "1910", tipo: "Tributado" },
@@ -215,29 +170,55 @@
         "6929": { revenda: "Ref. NFC-e", consumo: "Ref. NFC-e", ativo: "Ref. NFC-e", bonificacao: "Ref. NFC-e", tipo: "Venda Ref. NFC-e" }
     };
 
+    window.onload = function() {
+        const empresaLogada = localStorage.getItem("trust_empresa");
+        if (empresaLogada) { liberar(empresaLogada); }
+    };
+
+    function processarLogin() {
+        const cnpj = document.getElementById('cnpj-input').value;
+        const senha = document.getElementById('senha-fake').value;
+        if (autorizados[cnpj] && senha.length > 0) {
+            const nome = autorizados[cnpj];
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('lock').innerHTML = "🔓";
+                document.getElementById('lock').classList.add('unlock-animation');
+                document.getElementById('loader-text').innerText = "Acesso Concedido!";
+                document.getElementById('loader-text').style.color = "var(--success)";
+            }, 800);
+            setTimeout(() => {
+                localStorage.setItem("trust_empresa", nome);
+                liberar(nome);
+                logarNoGoogle(nome, "Login Inicial");
+            }, 1800);
+        } else {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'block';
+        }
+    }
+
+    function liberar(nome) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        const welcome = document.getElementById('welcome-msg');
+        welcome.innerText = "Olá, " + nome + "!";
+        welcome.style.display = "inline-block";
+    }
+
     function converter() {
         const input = document.getElementById('origem').value;
         const destino = document.getElementById('destino').value;
         const resDiv = document.getElementById('resultado');
-        const errDiv = document.getElementById('not-found');
-        const label = document.getElementById('result-label');
-        if (!input || input.length < 4) {
-            resDiv.style.display = "none";
-            errDiv.style.display = "none";
-            return;
-        }
         if (db[input]) {
-            const resultado = db[input][destino];
-            document.getElementById('cfop-res').innerText = resultado;
+            document.getElementById('cfop-res').innerText = db[input][destino];
             document.getElementById('tipo-badge').innerText = db[input].tipo;
-            label.innerText = resultado === "Ref. NFC-e" ? "Informação importante:" : "Use este CFOP na entrada:";
             resDiv.style.display = "block";
-            errDiv.style.display = "none";
-        } else {
-            resDiv.style.display = "none";
-            errDiv.style.display = "block";
-        }
+        } else { resDiv.style.display = "none"; }
     }
+
     function explicar() {
         const cfop = document.getElementById('cfop-res').innerText;
         const def = definicoes[cfop] || "Consulte sua contabilidade.";
