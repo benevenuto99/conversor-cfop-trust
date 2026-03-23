@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9Q0J4XD59"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z9Q0J4XD59');
+
+      function logarNoGoogle(nomeEmpresa, acao) {
+          gtag('event', 'uso_portal', {
+              'empresa': nomeEmpresa,
+              'tipo_acesso': acao
+          });
+      }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trust Soluções - Portal do Cliente</title>
@@ -8,36 +23,24 @@
         :root { --primary: #004a99; --secondary: #f8f9fa; --danger: #d32f2f; --success: #2e7d32; --zap: #25d366; --alert: #fbc02d; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--secondary); margin: 0; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center;}
         .logo-img { max-height: 90px; width: auto; display: block; margin: 0 auto 15px auto; border-radius: 8px; }
-        
         #login-screen, #error-screen { display: block; text-align: center; background: white; width: 100%; max-width: 400px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-top: 20px; }
         #main-app, #error-screen { display: none; }
-        
         .container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); margin-top: 20px;}
-        
         .exclamation-icon { font-size: 80px; color: var(--alert); margin-bottom: 15px; display: block; }
         .error-title { color: var(--danger); font-size: 20px; font-weight: bold; margin-bottom: 15px; }
-        
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 13px; text-align: left; color: #444; }
         input, select { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; margin-bottom: 10px; }
-        
         .btn-entrar { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        
-        /* GRADE DE SUPORTE CORRIGIDA */
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; box-sizing: border-box; }
-        
-        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px 5px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; }
+        .btn-zap { background: var(--zap); color: white; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-zap div { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .btn-zap span { font-size: 10px; font-weight: normal; opacity: 0.9; margin-top: 2px; text-align: center; }
-        .zap-icon { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
-        
-        /* Botão Adailton com largura controlada pela grade */
+        .btn-zap span { font-size: 11px; font-weight: normal; opacity: 0.9; margin-top: 2px; }
+        .zap-icon { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
         .btn-full { grid-column: span 2; background: #128C7E; width: 100%; }
-
         .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; text-align: center; }
         .success-card { background: #e8f5e9; border: 1px solid var(--success); color: #333; }
         .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
         .cfop-num { font-size: 34px; color: var(--primary); font-weight: bold; display: block; margin: 5px 0; }
-        
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; line-height: 1.4; }
     </style>
@@ -77,6 +80,7 @@
 <div class="container" id="main-app">
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <div style="text-align: center; margin-bottom: 20px;">
+        <p id="welcome-msg" style="font-size: 14px; color: #666; margin-bottom: 5px; font-weight: bold;"></p>
         <strong style="color: var(--primary); display: block;">CONVERSÃO DOS CFOP PARA ENTRADA</strong>
     </div>
 
@@ -125,7 +129,12 @@
 </div>
 
 <script>
-    const autorizados = ["10258964000198", "10258964000285"]; 
+    const autorizados = {
+        "10258964000198": "Usuário Master Trust Soluções em Informática",
+        "10258964000285": "Cliente VIP Teste",
+        "12345678000100": "Felipe Ferreira"
+    }; 
+    
     const definicoes = {
         "1102": "Compra para comercialização de mercadoria tributada dentro do Estado.",
         "1403": "Compra para comercialização de mercadoria sujeita ao regime de ST dentro do Estado.",
@@ -145,23 +154,33 @@
     };
 
     window.onload = function() {
-        if (localStorage.getItem("trust_sessao") === "valida") { liberar(); }
+        const empresaLogada = localStorage.getItem("trust_empresa");
+        if (empresaLogada) { 
+            liberar(empresaLogada); 
+            logarNoGoogle(empresaLogada, "Reabertura");
+        }
     };
+
     function tentarAcesso() {
         const cnpj = document.getElementById('cnpj-input').value;
         const senha = document.getElementById('senha-fake').value;
-        if (autorizados.includes(cnpj) && senha.length > 0) {
+        if (autorizados[cnpj] && senha.length > 0) {
+            const nomeEmpresa = autorizados[cnpj];
             localStorage.setItem("trust_sessao", "valida");
-            liberar();
+            localStorage.setItem("trust_empresa", nomeEmpresa);
+            liberar(nomeEmpresa);
+            logarNoGoogle(nomeEmpresa, "Login Inicial");
         } else {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('error-screen').style.display = 'block';
         }
     }
-    function liberar() {
+
+    function liberar(nome) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('error-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
+        document.getElementById('welcome-msg').innerText = "Olá, " + nome + "!";
     }
 
     const db = {
