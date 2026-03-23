@@ -59,10 +59,14 @@
 
         #btn-sair-master { display: none; margin-top: 15px; color: #999; text-decoration: underline; font-size: 11px; cursor: pointer; background: none; border: none; }
 
-        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; border: 1px solid var(--success); background: #e8f5e9; }
+        /* CARDS DE RESULTADO E ERRO */
+        .card { padding: 18px; border-radius: 12px; margin-top: 15px; display: none; animation: slideUp 0.3s ease; cursor: pointer; text-align: center; }
+        .success-card { background: #e8f5e9; border: 1px solid var(--success); color: #333; }
+        .warning-card { background: #ffebee; border: 1px solid var(--danger); color: #b71c1c; }
         .cfop-num { font-size: 34px; color: var(--primary); font-weight: bold; display: block; margin: 5px 0; }
+        
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; }
+        .footer { font-size: 11px; color: #666; text-align: center; margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -117,11 +121,16 @@
     <label>2. CFOP da Nota (Origem):</label>
     <input type="number" id="origem" placeholder="Ex: 5102" onkeyup="converter()">
 
-    <div id="resultado" class="card" onclick="explicar()">
+    <div id="resultado" class="card success-card" onclick="explicar()">
         <small id="result-label">Use este CFOP na entrada:</small>
         <span class="cfop-num" id="cfop-res">----</span>
         <small id="tipo-badge" style="font-weight: bold;"></small>
         <p style="margin-top:10px; font-size:12px;">💡 Toque para ver a definição técnica.</p>
+    </div>
+
+    <div id="not-found" class="card warning-card">
+        <strong>⚠️ CFOP NÃO ENCONTRADO</strong>
+        <p style="font-size: 13px; margin-top: 5px;">Favor consultar sua contabilidade.</p>
     </div>
 
     <div class="tech-support">
@@ -141,7 +150,7 @@
 
     <button id="btn-sair-master" onclick="logoutMaster()">Encerrar Sessão Master</button>
 
-    <div class="footer">Desenvolvido por Trust Soluções para uso exclusivo.</div>
+    <div class="footer">Desenvolvido por Trust Soluções para uso exclusivo de seus clientes.</div>
 </div>
 
 <script>
@@ -240,11 +249,23 @@
         const input = document.getElementById('origem').value;
         const destino = document.getElementById('destino').value;
         const resDiv = document.getElementById('resultado');
+        const errDiv = document.getElementById('not-found');
+        
+        if (!input || input.length < 4) {
+            resDiv.style.display = "none";
+            errDiv.style.display = "none";
+            return;
+        }
+
         if (db[input]) {
             document.getElementById('cfop-res').innerText = db[input][destino];
             document.getElementById('tipo-badge').innerText = db[input].tipo;
             resDiv.style.display = "block";
-        } else { resDiv.style.display = "none"; }
+            errDiv.style.display = "none";
+        } else {
+            resDiv.style.display = "none";
+            errDiv.style.display = "block";
+        }
     }
 
     function explicar() {
