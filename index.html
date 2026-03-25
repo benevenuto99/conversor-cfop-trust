@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9Q0J4XD59"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Z9Q0J4XD59');
-      function logarNoGoogle(nomeEmpresa, acao) {
-          if (typeof gtag === 'function') {
-              gtag('event', 'uso_portal', { 'empresa': nomeEmpresa, 'tipo_acesso': acao });
-          }
-      }
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trust Soluções — Portal do Cliente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    <title>Trust Soluções - Portal do Cliente</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --trust-dark:    #1a5f8a;
-            --trust-mid:     #2e8bc0;
-            --trust-light:   #5bb8e8;
-            --trust-pale:    #d6eef9;
-            --trust-accent:  #4db6e4;
-            --danger:   #c62828;
-            --success:  #2e7d32;
-            --zap:      #25d366;
-            --zap2:     #128C7E;
-            --warn:     #e65100;
-            --bg:       #f0f7fc;
-            --surface:  #ffffff;
-            --border:    #cde4f2;
-            --text:     #1a2e3b;
-            --muted:    #5a7a8e;
+            --trust-dark: #1a5f8a;
+            --trust-mid: #2e8bc0;
+            --trust-light: #5bb8e8;
+            --trust-pale: #d6eef9;
+            --trust-accent: #4db6e4;
+            --danger: #c62828;
+            --success: #2e7d32;
+            --zap: #25d366;
+            --bg: #f0f7fc;
+            --surface: #ffffff;
+            --border: #cde4f2;
+            --text: #1a2e3b;
+            --muted: #5a7a8e;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,352 +33,294 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 16px 40px;
-            overflow-x: hidden;
+            padding: 20px 16px;
         }
 
+        /* Barra de progresso decorativa no topo */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--trust-dark), var(--trust-mid), var(--trust-light), var(--trust-mid), var(--trust-dark));
-            background-size: 200% 100%;
-            animation: gradientShift 4s ease infinite;
-            z-index: 999;
-        }
-        @keyframes gradientShift {
-            0%   { background-position: 0% 0%; }
-            50%  { background-position: 100% 0%; }
-            100% { background-position: 0% 0%; }
+            background: linear-gradient(90deg, var(--trust-dark), var(--trust-light));
+            z-index: 1000;
         }
 
-        .screen {
+        .container {
             width: 100%;
             max-width: 420px;
             background: var(--surface);
             border-radius: 18px;
-            box-shadow: 0 4px 30px rgba(46,139,192,0.12), 0 1px 4px rgba(0,0,0,0.06);
-            padding: 32px 24px 28px;
-            margin-top: 24px;
-            border: 1px solid var(--border);
-            display: none;
-            animation: fadeUp .45s cubic-bezier(.4,0,.2,1) forwards;
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 30px 20px;
+            margin-top: 20px;
+            display: none; /* Inicialmente oculto */
         }
 
-        .logo-wrap {
-            text-align: center;
-            margin-bottom: 22px;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .logo-canvas {
-            max-height: 80px;
-            width: auto;
-            border-radius: 6px;
-            pointer-events: none;
-            display: block;
-            margin: 0 auto;
-        }
-        .logo-shield {
-            position: relative;
-            display: inline-block;
-        }
-        .logo-shield::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-            cursor: default;
+        .active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .screen-header {
-            background: linear-gradient(135deg, var(--trust-dark) 0%, var(--trust-mid) 100%);
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 22px;
-            text-align: center;
-        }
-        .screen-header h2 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
+        .header-box {
+            background: linear-gradient(135deg, var(--trust-dark), var(--trust-mid));
             color: white;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .screen-header p {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.75);
-            margin-top: 3px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
         }
 
-        label {
-            display: block;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
-            margin-top: 16px;
-        }
-        label:first-of-type { margin-top: 0; }
+        .header-box h2 { font-family: 'Barlow Condensed'; text-transform: uppercase; font-size: 1.2rem; }
+        .header-box p { font-size: 0.8rem; opacity: 0.9; }
 
-        input {
+        label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: 15px 0 5px 0; }
+
+        input, select {
             width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
             font-size: 1rem;
-            font-family: 'Barlow', sans-serif;
-            color: var(--text);
-            background: #fafcff;
-            transition: border-color .2s, box-shadow .2s;
             outline: none;
+            transition: 0.3s;
         }
-        input:focus {
-            border-color: var(--trust-mid);
-            box-shadow: 0 0 0 3px rgba(46,139,192,0.12);
-        }
-        input.input-ok { border-color: var(--success); }
-        input.input-bad { border-color: var(--danger); }
 
-        select {
-            width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-family: 'Barlow', sans-serif;
-            color: var(--text);
-            background: #fafcff;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232e8bc0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 40px;
-            cursor: pointer;
-            outline: none;
-        }
+        input:focus { border-color: var(--trust-mid); }
 
         .btn-primary {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, var(--trust-dark) 0%, var(--trust-mid) 100%);
+            background: var(--trust-dark);
             color: white;
             border: none;
-            border-radius: 11px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.05rem;
+            border-radius: 8px;
             font-weight: 700;
-            letter-spacing: 1.5px;
             text-transform: uppercase;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 4px 14px rgba(46,139,192,0.35);
-            transition: transform .15s, box-shadow .2s, opacity .2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-primary:hover  { transform: translateY(-1px); }
-        .btn-primary:active { transform: scale(.98); }
-        .btn-primary:disabled { opacity: .65; cursor: not-allowed; }
-
-        .btn-spinner {
-            display: none;
-            width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin .7s linear infinite;
+            transition: 0.3s;
         }
 
-        .input-error {
-            font-size: 0.76rem;
-            color: var(--danger);
-            font-weight: 600;
-            margin-top: 6px;
-            display: none;
-            padding: 8px 12px;
-            background: #ffebee;
-            border-radius: 8px;
-            border-left: 3px solid var(--danger);
-        }
+        .btn-primary:hover { background: var(--trust-mid); }
 
-        #cnpj-hint {
-            font-size: 0.72rem;
-            margin-top: 5px;
-            display: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-        }
-        #cnpj-hint.hint-ok  { color: var(--success); background: #e8f5e9; }
-        #cnpj-hint.hint-bad { color: var(--danger);  background: #ffebee; }
-
-        #loader { text-align: center; }
-        .loader-ring {
-            width: 56px; height: 56px;
-            border: 4px solid var(--trust-pale);
-            border-top-color: var(--trust-mid);
-            border-radius: 50%;
-            animation: spin .8s linear infinite;
-            margin: 0 auto 16px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #welcome-msg {
-            display: none;
-            background: linear-gradient(135deg, var(--trust-pale), #e8f6fd);
-            border: 1px solid var(--trust-accent);
-            color: var(--trust-dark);
-            font-weight: 700;
-            font-size: 0.88rem;
-            padding: 9px 16px;
-            border-radius: 100px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
+        /* Resultado */
         #resultado {
-            display: none;
-            margin-top: 18px;
-            border-radius: 14px;
+            margin-top: 20px;
+            border: 2px solid var(--trust-accent);
+            border-radius: 12px;
             overflow: hidden;
-            border: 1.5px solid var(--trust-accent);
-            animation: fadeUp .3s ease;
-        }
-        .result-header {
-            background: linear-gradient(135deg, var(--trust-dark), var(--trust-mid));
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .result-header span { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,.8); text-transform: uppercase; }
-        
-        .tipo-pill {
-            font-size: 0.68rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 100px;
-            background: rgba(255,255,255,.2);
-            color: white;
-        }
-        .result-body {
-            background: var(--surface);
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .cfop-num {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: var(--trust-dark);
-            line-height: 1;
-        }
-        .result-actions { display: flex; flex-direction: column; gap: 8px; }
-        
-        .btn-copy, .btn-def {
-            border: 1.5px solid var(--trust-accent);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-            font-family: 'Barlow', sans-serif;
-        }
-        .btn-copy { background: var(--trust-pale); color: var(--trust-dark); }
-        .btn-def { background: none; border-color: var(--border); color: var(--muted); }
-
-        #definicao-box {
             display: none;
-            background: linear-gradient(135deg, #edf7fd, #f5fbff);
-            border-top: 1px dashed var(--trust-accent);
-            padding: 14px 20px;
-            font-size: 0.84rem;
-            color: var(--text);
-            line-height: 1.6;
         }
+
+        .res-header { background: var(--trust-pale); padding: 10px; font-weight: bold; text-align: center; color: var(--trust-dark); }
+        .res-body { padding: 20px; text-align: center; background: white; }
+        .cfop-val { font-size: 2.5rem; font-weight: 800; color: var(--trust-dark); font-family: 'Barlow Condensed'; }
 
         #not-found {
             display: none;
-            margin-top: 18px;
             background: #fff3e0;
-            border: 1.5px solid #ffb74d;
-            border-radius: 12px;
-            padding: 16px 18px;
+            padding: 15px;
+            border-radius: 8px;
+            color: #e65100;
             text-align: center;
+            margin-top: 20px;
         }
 
-        .support-section { margin-top: 22px; }
-        .support-title {
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: var(--muted);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .tech-support { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        /* Suporte */
+        .support-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px; }
         .btn-zap {
+            text-decoration: none;
             background: var(--zap);
             color: white;
-            padding: 12px 8px;
-            border-radius: 11px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            box-shadow: 0 3px 10px rgba(37,211,102,.25);
-        }
-        .btn-zap div { display: flex; flex-direction: column; align-items: flex-start; }
-        .btn-zap .name { font-size: 0.88rem; font-weight: 800; line-height: 1.2; }
-        .btn-zap .role { font-size: 0.68rem; opacity: .85; line-height: 1.2; }
-        .btn-full { grid-column: span 2; background: var(--zap2); }
-
-        #modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.45);
-            z-index: 500;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        #modal-overlay.open { display: flex; }
-        .modal-box {
-            background: white;
-            border-radius: 16px;
-            padding: 28px 24px;
-            max-width: 380px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,.3);
-        }
-
-        .footer {
-            font-size: 0.72rem;
-            color: var(--muted);
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            margin-top: 22px;
-            padding-top: 16px;
-            border-top: 1px dashed var(--border);
+            font-size: 0.8rem;
+            font-weight: bold;
         }
+        .full-width { grid-column: span 2; background: #128C7E; }
+
+        /* Loader */
+        #loader { text-align: center; padding: 50px 0; }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid var(--trust-pale);
+            border-top: 5px solid var(--trust-mid);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         #copy-toast {
-            position: fixed;
+            position: fixed; bottom: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 50px;
+            display: none; z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="container active">
+        <div class="header-box">
+            <h2>Portal do Cliente</h2>
+            <p>Apoio Digisat - Autenticação</p>
+        </div>
+        <label>CNPJ da Empresa</label>
+        <input type="text" id="cnpj-input" placeholder="00.000.000/0001-00" maxlength="18">
+        
+        <label>Senha</label>
+        <input type="password" id="senha" placeholder="Digite sua senha">
+        
+        <p id="error-msg" style="color:red; font-size:0.8rem; margin-top:10px; display:none;"></p>
+        
+        <button class="btn-primary" onclick="handleLogin()">Entrar</button>
+    </div>
+
+    <div id="loader" class="container">
+        <div class="spinner"></div>
+        <p>Verificando Licença...</p>
+    </div>
+
+    <div id="main-app" class="container">
+        <div id="welcome-msg" style="margin-bottom: 15px; font-weight: bold; color: var(--trust-dark);"></div>
+        <div class="header-box">
+            <h2>Conversor de CFOP</h2>
+            <p>Entrada Automática</p>
+        </div>
+
+        <label>Destinação</label>
+        <select id="destino" onchange="converter()">
+            <option value="revenda">Revenda</option>
+            <option value="consumo">Uso e Consumo</option>
+            <option value="ativo">Ativo Imobilizado</option>
+            <option value="industrializacao">Industrialização</option>
+            <option value="bonificacao">Bonificação</option>
+        </select>
+
+        <label>CFOP da Nota (Origem)</label>
+        <input type="number" id="origem" placeholder="Ex: 5102" oninput="converter()">
+
+        <div id="resultado">
+            <div class="res-header">USE ESTE CÓDIGO:</div>
+            <div class="res-body">
+                <div class="cfop-val" id="cfop-res">----</div>
+                <button class="btn-primary" style="margin-top:10px; padding:8px;" onclick="copyToClipboard()">Copiar Código</button>
+            </div>
+        </div>
+
+        <div id="not-found">
+            <strong>Não encontrado</strong><br>Consulte seu contador.
+        </div>
+
+        <div class="support-grid">
+            <label class="full-width" style="text-align:center">Suporte Técnico</label>
+            <a href="https://wa.me/5532984351435" class="btn-zap">Felipe</a>
+            <a href="https://wa.me/5532988524952" class="btn-zap">Wesley</a>
+            <a href="https://wa.me/5532988342294" class="btn-zap full-width">Adailton (Financeiro)</a>
+        </div>
+        
+        <button onclick="logout()" style="background:none; border:none; color:gray; text-decoration:underline; width:100%; margin-top:20px; cursor:pointer; font-size:0.8rem">Sair / Trocar Empresa</button>
+    </div>
+
+    <div id="copy-toast">Copiado!</div>
+
+    <script>
+        // Banco de Dados de Clientes
+        const clientes = {
+            "10258964000198": "Admin Trust",
+            "44694375000174": "Ione Doidinha",
+            "39331968000136": "UNISHOP CATAGUASES LTDA",
+            "01400490000186": "PADARIA LANCHONETE UNIAO DE MIRAI"
+        };
+
+        // Lógica de Conversão
+        const tabelaCFOP = {
+            "5101": { revenda:"1102", consumo:"1556", ativo:"1551", industrializacao:"1101", bonificacao:"1910" },
+            "5102": { revenda:"1102", consumo:"1556", ativo:"1551", industrializacao:"1101", bonificacao:"1910" },
+            "5401": { revenda:"1403", consumo:"1407", ativo:"1406", industrializacao:"1101", bonificacao:"1910" },
+            "5403": { revenda:"1403", consumo:"1407", ativo:"1406", industrializacao:"1101", bonificacao:"1910" },
+            "5405": { revenda:"1403", consumo:"1407", ativo:"1406", industrializacao:"1101", bonificacao:"1910" },
+            "6101": { revenda:"2102", consumo:"2556", ativo:"2551", industrializacao:"2101", bonificacao:"2910" },
+            "6102": { revenda:"2102", consumo:"2556", ativo:"2551", industrializacao:"2101", bonificacao:"2910" },
+            "6401": { revenda:"2403", consumo:"2407", ativo:"2406", industrializacao:"2101", bonificacao:"2910" },
+            "6403": { revenda:"2403", consumo:"2407", ativo:"2406", industrializacao:"2101", bonificacao:"2910" },
+            "6404": { revenda:"2403", consumo:"2407", ativo:"2406", industrializacao:"2101", bonificacao:"2910" }
+        };
+
+        // Máscara CNPJ
+        document.getElementById('cnpj-input').addEventListener('input', function(e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+        });
+
+        function handleLogin() {
+            const cnpj = document.getElementById('cnpj-input').value.replace(/\D/g, '');
+            const pass = document.getElementById('senha').value;
+            const error = document.getElementById('error-msg');
+
+            if (clientes[cnpj] && pass !== "") {
+                document.getElementById('login-screen').classList.remove('active');
+                document.getElementById('loader').classList.add('active');
+                
+                setTimeout(() => {
+                    document.getElementById('loader').classList.remove('active');
+                    document.getElementById('main-app').classList.add('active');
+                    document.getElementById('welcome-msg').textContent = "Olá, " + clientes[cnpj];
+                    localStorage.setItem('session_trust', cnpj);
+                }, 1500);
+            } else {
+                error.textContent = "CNPJ ou senha inválidos.";
+                error.style.display = "block";
+            }
+        }
+
+        function converter() {
+            const origem = document.getElementById('origem').value;
+            const destino = document.getElementById('destino').value;
+            const resDiv = document.getElementById('resultado');
+            const notFound = document.getElementById('not-found');
+
+            if (origem.length === 4) {
+                if (tabelaCFOP[origem]) {
+                    document.getElementById('cfop-res').textContent = tabelaCFOP[origem][destino];
+                    resDiv.style.display = "block";
+                    notFound.style.display = "none";
+                } else {
+                    resDiv.style.display = "none";
+                    notFound.style.display = "block";
+                }
+            } else {
+                resDiv.style.display = "none";
+                notFound.style.display = "none";
+            }
+        }
+
+        function copyToClipboard() {
+            const val = document.getElementById('cfop-res').textContent;
+            navigator.clipboard.writeText(val);
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = "block";
+            toast.classList.add('show');
+            setTimeout(() => { toast.style.display = "none"; }, 2000);
+        }
+
+        function logout() {
+            localStorage.removeItem('session_trust');
+            location.reload();
+        }
+
+        // Auto-login
+        window.onload = () => {
+            const saved = localStorage.getItem('session_trust');
+            if (saved && clientes[saved]) {
+                document.getElementById('login-screen').classList.remove('active');
+                document.getElementById('main-app').classList.add('active');
+                document.getElementById('welcome-msg').textContent = "Olá, " + clientes[saved];
+            }
+        }
+    </script>
+</body>
+</html>
