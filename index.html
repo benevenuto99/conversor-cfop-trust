@@ -81,7 +81,7 @@
     <img src="https://i.postimg.cc/gjCfHVTV/LOGO-TRUST.png" alt="Trust Soluções" class="logo-img">
     <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Portal de Apoio ao Cliente Digisat.</p>
     <label>CNPJ da Empresa:</label>
-    <input type="number" id="cnpj-input" placeholder="Apenas números">
+    <input type="text" id="cnpj-input" placeholder="00.000.000/0001-00">
     <label>Senha de Acesso:</label>
     <input type="password" id="senha-fake" placeholder="******">
     <button class="btn-entrar" onclick="processarLogin()">AUTENTICAR</button>
@@ -157,7 +157,9 @@
     const autorizados = {
         "10258964000198": "Usuário Master Trust Soluções em Informática",
         "44694375000174": "Ione Doidinha",
-        "12345678000100": "Felipe Ferreira"
+        "12345678000100": "Felipe Ferreira",
+        "22316434000138": "SORVETERIA SANTANA LTDA.",
+        "60027033000157": "MUNDO DOS PAES LTDA."
     }; 
 
     const definicoes = {
@@ -204,10 +206,12 @@
     };
 
     function processarLogin() {
-        const cnpj = document.getElementById('cnpj-input').value;
+        let cnpjRaw = document.getElementById('cnpj-input').value;
+        const cnpjLimpo = cnpjRaw.replace(/\D/g, ''); // Garante que aceita pontos e barras ao limpar tudo que não é número
         const senha = document.getElementById('senha-fake').value;
-        if (autorizados[cnpj] && senha.length > 0) {
-            const nome = autorizados[cnpj];
+
+        if (autorizados[cnpjLimpo] && senha.length > 0) {
+            const nome = autorizados[cnpjLimpo];
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('loader').style.display = 'block';
             setTimeout(() => {
@@ -218,8 +222,8 @@
             }, 800);
             setTimeout(() => {
                 localStorage.setItem("trust_empresa", nome);
-                localStorage.setItem("trust_cnpj", cnpj);
-                liberar(nome, cnpj);
+                localStorage.setItem("trust_cnpj", cnpjLimpo);
+                liberar(nome, cnpjLimpo);
                 logarNoGoogle(nome, "Login Inicial");
             }, 1800);
         } else {
